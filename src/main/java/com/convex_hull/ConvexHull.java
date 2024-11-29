@@ -61,17 +61,15 @@ public class ConvexHull {
         }
     }
 
-    public int x_limit = 10;
-    public int y_limit = 10;
     public int point_limit = 10;
 
-    public ConvexHull(int x_limit, int y_limit, int point_limit) {
-        this.x_limit = x_limit;
-        this.y_limit = y_limit;
+    public ConvexHull(int point_limit) {
         this.point_limit = point_limit;
     }
 
     public void convexHullWithPrint(Point[] points) {
+        this.checkLimits(points);
+
         Point start = this.getLowestPoint(points);
 
         System.out.println("Original Point: " + Point.toString(start));
@@ -99,6 +97,8 @@ public class ConvexHull {
     }
 
     public Stack<Point> convexHull(Point[] points) {
+        this.checkLimits(points);
+
         Point start = this.getLowestPoint(points);
 
         sortPointsByPolarAngle(points, start);
@@ -122,6 +122,16 @@ public class ConvexHull {
         return convexHull;
     }
 
+    private void checkLimits(Point[] points) {
+        if (points.length < 3) {
+            throw new IllegalArgumentException("Need at least 3 points to form a convex hull");
+        }
+
+        if (points.length > this.point_limit) {
+            throw new IllegalArgumentException("Number of points exceeds the limit of " + this.point_limit);
+        }
+    }
+
     private Point getLowestPoint(Point[] points) {
         Point lowest = points[0];
         for (int i = 1; i < points.length; i++) {
@@ -142,7 +152,7 @@ public class ConvexHull {
     }
     
     public static void main(String[] args) {
-        ConvexHull convexHull = new ConvexHull(10, 10, 10);
+        ConvexHull convexHull = new ConvexHull(10);
 
         Point[] points = new Point[9];
         points[0] = new Point(1, 1);
