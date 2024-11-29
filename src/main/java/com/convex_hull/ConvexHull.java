@@ -29,7 +29,7 @@ public class ConvexHull {
         // print a points array
         public static void printPoints(Point[] points) {
             for (Point point : points) {
-                System.out.println("(" + point.x + ", " + point.y + ") " + point.angle_with_start);
+                System.out.print("(" + point.x + ", " + point.y + ") ");
             }
         }
 
@@ -38,6 +38,26 @@ public class ConvexHull {
             for (Point point : points) {
                 System.out.print("(" + point.x + ", " + point.y + ") ");
             }
+        }
+
+        public static String toString(Point point) {
+            return "(" + point.x + ", " + point.y + ")";
+        }
+
+        public static String toString(Point[] points) {
+            String return_string = "";
+            for (Point point : points) {
+                return_string += "(" + point.x + ", " + point.y + ") ";
+            }
+            return return_string;
+        }
+
+        public static String toString(Stack<Point> points) {
+            String return_string = "";
+            for (Point point : points) {
+                return_string += "(" + point.x + ", " + point.y + ") ";
+            }
+            return return_string;
         }
     }
 
@@ -60,6 +80,8 @@ public class ConvexHull {
             }
         }
 
+        System.out.println("Original Point: " + Point.toString(start));
+
         for (Point point : points) {
             point.setAngle(start);
         }
@@ -67,7 +89,8 @@ public class ConvexHull {
         // sort array based on point's angle_with_start
         Arrays.sort(points, (Point p1, Point p2) -> Double.compare(p1.angle_with_start, p2.angle_with_start));
 
-        Point.printPoints(points);
+        // print the sorted array
+        System.out.println("Sorted Points: " + Point.toString(points));
 
         // start the convex hull with the leftmost point
         Stack<Point> convexHull = new Stack<>();
@@ -86,7 +109,7 @@ public class ConvexHull {
         }
         
         // print the convex hull stack
-        Point.printPoints(convexHull);
+        System.out.println("Convex Hull: " + Point.toString(convexHull));
     }
 
     public static void main(String[] args) {
