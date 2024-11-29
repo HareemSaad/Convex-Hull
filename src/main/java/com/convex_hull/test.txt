@@ -1,0 +1,13 @@
+
+
+        // input points
+        // convexHull.points[0] = new Point(0, 3);
+        // convexHull.points[1] = new Point(2, 2);
+        // convexHull.points[2] = new Point(1, 1);
+        // convexHull.points[3] = new Point(2, 1);
+        // convexHull.points[4] = new Point(3, 0);
+        // convexHull.points[5] = new Point(0, 0);
+        // convexHull.points[6] = new Point(3, 3);
+        // convexHull.points[7] = new Point(0, 2);
+        // convexHull.points[8] = new Point(3, 2);
+        // convexHull.points[9] = new Point(2, 0);
