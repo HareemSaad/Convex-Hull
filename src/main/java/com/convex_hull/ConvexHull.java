@@ -72,25 +72,11 @@ public class ConvexHull {
     }
 
     public void convexHullWithPrint(Point[] points) {
-        // find the leftmost point
-        Point start = points[0];
-        for (int i = 1; i < points.length; i++) {
-            if (points[i].y < start.y) {
-                start = points[i];
-            }
-        }
+        Point start = this.getLowestPoint(points);
 
         System.out.println("Original Point: " + Point.toString(start));
 
-        for (Point point : points) {
-            point.setAngle(start);
-        }
-
-        // sort array based on point's angle_with_start
-        Arrays.sort(points, (Point p1, Point p2) -> Double.compare(p1.angle_with_start, p2.angle_with_start));
-
-        // print the sorted array
-        System.out.println("Sorted Points: " + Point.toString(points));
+        sortPointsByPolarAngle(points, start);
 
         // start the convex hull with the leftmost point
         Stack<Point> convexHull = new Stack<>();
@@ -113,20 +99,9 @@ public class ConvexHull {
     }
 
     public Stack<Point> convexHull(Point[] points) {
-        // find the leftmost point
-        Point start = points[0];
-        for (int i = 1; i < points.length; i++) {
-            if (points[i].y < start.y) {
-                start = points[i];
-            }
-        }
+        Point start = this.getLowestPoint(points);
 
-        for (Point point : points) {
-            point.setAngle(start);
-        }
-
-        // sort array based on point's angle_with_start
-        Arrays.sort(points, (Point p1, Point p2) -> Double.compare(p1.angle_with_start, p2.angle_with_start));
+        sortPointsByPolarAngle(points, start);
 
         // start the convex hull with the leftmost point
         Stack<Point> convexHull = new Stack<>();
@@ -147,6 +122,25 @@ public class ConvexHull {
         return convexHull;
     }
 
+    private Point getLowestPoint(Point[] points) {
+        Point lowest = points[0];
+        for (int i = 1; i < points.length; i++) {
+            if (points[i].y < lowest.y) {
+                lowest = points[i];
+            }
+        }
+        return lowest;
+    }
+
+    private void sortPointsByPolarAngle(Point[] points, Point start) {
+        for (Point point : points) {
+            point.setAngle(start);
+        }
+
+        // sort array based on point's angle_with_start
+        Arrays.sort(points, (Point p1, Point p2) -> Double.compare(p1.angle_with_start, p2.angle_with_start));
+    }
+    
     public static void main(String[] args) {
         ConvexHull convexHull = new ConvexHull(10, 10, 10);
 
