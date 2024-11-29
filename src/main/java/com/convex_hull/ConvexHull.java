@@ -71,7 +71,7 @@ public class ConvexHull {
         this.point_limit = point_limit;
     }
 
-    public void convexHull(Point[] points) {
+    public void convexHullWithPrint(Point[] points) {
         // find the leftmost point
         Point start = points[0];
         for (int i = 1; i < points.length; i++) {
@@ -112,6 +112,41 @@ public class ConvexHull {
         System.out.println("Convex Hull: " + Point.toString(convexHull));
     }
 
+    public Stack<Point> convexHull(Point[] points) {
+        // find the leftmost point
+        Point start = points[0];
+        for (int i = 1; i < points.length; i++) {
+            if (points[i].y < start.y) {
+                start = points[i];
+            }
+        }
+
+        for (Point point : points) {
+            point.setAngle(start);
+        }
+
+        // sort array based on point's angle_with_start
+        Arrays.sort(points, (Point p1, Point p2) -> Double.compare(p1.angle_with_start, p2.angle_with_start));
+
+        // start the convex hull with the leftmost point
+        Stack<Point> convexHull = new Stack<>();
+        convexHull.push(start);
+        convexHull.push(points[1]);
+
+        for (int i = 1; i < points.length - 1; i++) {
+            Point point_to_add = points[i + 1];
+            int top = convexHull.size() - 1;
+            if (Point.ccw(convexHull.elementAt(top - 1), convexHull.elementAt(top), point_to_add)) {
+                convexHull.push(point_to_add);
+            } else {
+                convexHull.pop();
+                i--;
+            }
+        }
+        
+        return convexHull;
+    }
+
     public static void main(String[] args) {
         ConvexHull convexHull = new ConvexHull(10, 10, 10);
 
@@ -126,7 +161,7 @@ public class ConvexHull {
         points[7] = new Point(3, 2);
         points[8] = new Point(4, 2);
 
-        convexHull.convexHull(points);
+        System.out.println("Convex Hull: " + Point.toString(convexHull.convexHull(points)));
 
     }
 }
