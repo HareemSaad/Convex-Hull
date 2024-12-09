@@ -114,7 +114,10 @@ public class ConvexHull {
         System.out.print("Points: ");
         Point.printPoints(points);
 
+        long startTime = System.nanoTime();
         System.out.println("\n\nConvex Hull: " + Point.toString(convexHull.convexHull(points)));
+        long endTime = System.nanoTime();
 
+        System.out.println("Time taken: " + (endTime - startTime) + " ns");
     }
 }

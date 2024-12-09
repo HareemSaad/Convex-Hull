@@ -123,7 +123,15 @@ public class JarvisMarch {
 
         // convexHull.convexHullWithPrint(points);
 
+        // print time before
+        long startTime = System.nanoTime();
         System.out.println("\n\nConvex Hull: " + Point.toString(convexHull.convexHull(points)));
+        // print time after
+        long endTime = System.nanoTime();
+
+        // print the time taken
+        System.out.println("Time taken: " + (endTime - startTime) + " ns");
+        System.out.println("Start Time: " + startTime + " End Time: " + endTime);
 
     }
 }
