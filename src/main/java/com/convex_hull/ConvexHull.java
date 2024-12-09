@@ -15,6 +15,11 @@ public class ConvexHull {
             this.y = y;
         }
 
+        public Point(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+
         public void setAngle(Point start) {
             this.angle_with_start = Math.toDegrees(Math.atan2(this.y - start.y, this.x - start.x));
         }
@@ -61,10 +66,12 @@ public class ConvexHull {
         }
     }
 
-    public int point_limit = 10;
+    public int area_height = 10;
+    public int area_width = 10;
 
-    public ConvexHull(int point_limit) {
-        this.point_limit = point_limit;
+    public ConvexHull(int height, int width) {
+        this.area_height = height;
+        this.area_width = width;
     }
 
     public void convexHullWithPrint(Point[] points) {
@@ -122,13 +129,21 @@ public class ConvexHull {
         return convexHull;
     }
 
+    public Point[] generateRandomPoints(int number_of_points) {
+        // pick random points within the area
+        Point[] points = new Point[number_of_points];
+        for (int i = 0; i < number_of_points; i++) {
+            // generate a random double point between 0 and area_width
+            double x = Math.random() * this.area_width;
+            double y = Math.random() * this.area_height;
+            points[i] = new Point(x, y);
+        }
+        return points;
+    }
+
     private void checkLimits(Point[] points) {
         if (points.length < 3) {
             throw new IllegalArgumentException("Need at least 3 points to form a convex hull");
-        }
-
-        if (points.length > this.point_limit) {
-            throw new IllegalArgumentException("Number of points exceeds the limit of " + this.point_limit);
         }
     }
 
@@ -152,20 +167,15 @@ public class ConvexHull {
     }
     
     public static void main(String[] args) {
-        ConvexHull convexHull = new ConvexHull(10);
+        ConvexHull convexHull = new ConvexHull(10000, 10000 );
 
-        Point[] points = new Point[9];
-        points[0] = new Point(1, 1);
-        points[1] = new Point(1, 3);
-        points[2] = new Point(2, 1);
-        points[3] = new Point(2, 2);
-        points[4] = new Point(2, 3);
-        points[5] = new Point(2, 4);
-        points[6] = new Point(3, 1);
-        points[7] = new Point(3, 2);
-        points[8] = new Point(4, 2);
+        Point[] points = convexHull.generateRandomPoints(100);
 
-        System.out.println("Convex Hull: " + Point.toString(convexHull.convexHull(points)));
+        // print the points
+        System.out.print("Points: ");
+        Point.printPoints(points);
+
+        System.out.println("\n\nConvex Hull: " + Point.toString(convexHull.convexHull(points)));
 
     }
 }
