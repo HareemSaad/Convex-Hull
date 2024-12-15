@@ -17,19 +17,43 @@ public class SecureRedZone {
         this.area_width = width;
     }
 
-    public Point[] generateRandomPoints(int number_of_points) {
-        // pick random points within the area
-        Point[] points = new Point[number_of_points];
-        for (int i = 0; i < number_of_points; i++) {
-            // generate a random double point between 0 and area_width
-            double x = Math.random() * this.area_width;
-            double y = Math.random() * this.area_height;
-            double radiationLevel = Math.random();
-            points[i] = new Point(x, y, radiationLevel);
+    public Point[] generateRandomPoints(int gridWidth, int gridHeight) {
+        int totalSensors = gridWidth * gridHeight;
+        Point[] points = new Point[totalSensors];
+    
+        // Grid spacing based on area dimensions
+        double xSpacing = this.area_width / gridWidth;
+        double ySpacing = this.area_height / gridHeight;
+    
+        // Single Hotspot center
+        double hotspotX = Math.random() * this.area_width;  // X-coordinate of the hotspot
+        double hotspotY = Math.random() * this.area_height; // Y-coordinate of the hotspot
+    
+        // Generate grid with radiation levels
+        int index = 0;
+        for (int i = 0; i < gridWidth; i++) {
+            for (int j = 0; j < gridHeight; j++) {
+                double x = i * xSpacing;
+                double y = j * ySpacing;
+    
+                // Calculate radiation level influenced by the single hotspot
+                double distance = Math.sqrt(Math.pow(hotspotX - x, 2) + Math.pow(hotspotY - y, 2));
+                double radiationLevel = Math.exp(-distance / 10.0); // Gaussian-like falloff
+    
+                // Add background noise
+                radiationLevel += 0.1 * Math.random();
+    
+                // Normalize radiation level to [0, 1]
+                radiationLevel = Math.min(1.0, radiationLevel);
+    
+                points[index++] = new Point(x, y, radiationLevel);
+            }
         }
+    
+        System.out.printf("Hotspot located at (%.2f, %.2f)\n", hotspotX, hotspotY); // Log the hotspot position
         return points;
     }
-
+    
     // private method to remove any points with radiation levels below the threshold
     private Point[] removeLowRadiationPoints(Point[] points) {
         int count = 0;
@@ -49,6 +73,12 @@ public class SecureRedZone {
         return newPoints;
     }
 
+    // public method to only print the low radiation points
+    public String printLowRadiationPoints(Point[] points) {
+        Point[] filteredPoints = this.removeLowRadiationPoints(points);
+        return Point.toString(filteredPoints);
+    }
+
     // public method to run the Jarvis March algorithm
     public List<Point> runJarvisMarch(Point[] points) {
         Point[] filteredPoints = this.removeLowRadiationPoints(points);
@@ -64,10 +94,12 @@ public class SecureRedZone {
     }
 
     public static void main(String[] args) {
-        SecureRedZone redZone = new SecureRedZone(0.5, 100, 100);
-        Point[] points = redZone.generateRandomPoints(100);
+        SecureRedZone redZone = new SecureRedZone(0.5, 50, 50);
+        Point[] points = redZone.generateRandomPoints(redZone.area_height, redZone.area_width);
 
-        System.out.println("Points: " + Point.toString(points) + "\n");
+        // System.out.println("Points: " + Point.toString(points) + "\n");
+
+        System.out.println("Low Radiation Points" + redZone.printLowRadiationPoints(points) + "\n");
 
         // run both algorithms with time logging and input/output logging
         System.out.println("Running Jarvis March");

@@ -31,12 +31,12 @@ public class Point {
         this.angle_with_start = Math.toDegrees(Math.atan2(this.y - start.y, this.x - start.x));
     }
 
-    // false => clockwise, true => counter-clockwise or collinear
+    // false => clockwise or collinear, true => counter-clockwise
     public static boolean ccw(Point p1, Point p2, Point p3) {
         double val = ((p2.y - p1.y) * (p3.x - p2.x)) - ((p2.x - p1.x) * (p3.y - p2.y));
         // String direction = val <= 0 ? "ccw" : "cw";
         // System.out.println("(" + p1.x + ", " + p1.y + ") (" + p2.x + ", " + p2.y + ") (" + p3.x + ", " + p3.y + ") -- " + direction + " -- " + val);   
-        return val <= 0;
+        return val < 0;
     }
 
     /**
