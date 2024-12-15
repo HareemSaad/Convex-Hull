@@ -3,12 +3,12 @@ package com.convex_hull;
 import java.util.Arrays;
 import java.util.Stack;
 
-public class ConvexHull {
+public class GrahamScan {
 
     public int area_height = 10;
     public int area_width = 10;
 
-    public ConvexHull(int height, int width) {
+    public GrahamScan(int height, int width) {
         this.area_height = height;
         this.area_width = width;
     }
@@ -97,18 +97,17 @@ public class ConvexHull {
     }
 
     private void sortPointsByPolarAngle(Point[] points, Point start) {
-        for (Point point : points) {
-            point.setAngle(start);
-        }
-
-        // sort array based on point's angle_with_start
-        Arrays.sort(points, (Point p1, Point p2) -> Double.compare(p1.angle_with_start, p2.angle_with_start));
+        Arrays.sort(points, (p1, p2) -> {
+            double angle1 = Math.atan2(p1.y - start.y, p1.x - start.x);
+            double angle2 = Math.atan2(p2.y - start.y, p2.x - start.x);
+            return Double.compare(angle1, angle2);
+        });
     }
     
     public static void main(String[] args) {
-        ConvexHull convexHull = new ConvexHull(10000, 10000 );
+        GrahamScan convexHull = new GrahamScan(10, 10);
 
-        Point[] points = convexHull.generateRandomPoints(100);
+        Point[] points = convexHull.generateRandomPoints(10);
 
         // print the points
         System.out.print("Points: ");

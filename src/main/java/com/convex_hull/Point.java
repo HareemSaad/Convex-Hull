@@ -6,16 +6,25 @@ import java.util.Stack;
 public class Point {
     public double x;
     public double y;
+    public double radiationLevel;
     public double angle_with_start = 0;
 
     public Point(int x, int y) {
         this.x = x;
         this.y = y;
+        this.radiationLevel = 0;
     }
 
     public Point(double x, double y) {
         this.x = x;
         this.y = y;
+        this.radiationLevel = 0;
+    }
+
+    public Point(double x, double y, double radiationLevel) {
+        this.x = x;
+        this.y = y;
+        this.radiationLevel = radiationLevel;
     }
 
     public void setAngle(Point start) {
@@ -66,7 +75,7 @@ public class Point {
     public static String toString(Point[] points) {
         String return_string = "";
         for (Point point : points) {
-            return_string += "(" + point.x + ", " + point.y + ") ";
+            return_string += "(" + point.x + ", " + point.y + "), ";
         }
         return return_string;
     }
@@ -74,7 +83,7 @@ public class Point {
     public static String toString(Stack<Point> points) {
         String return_string = "";
         for (Point point : points) {
-            return_string += "(" + point.x + ", " + point.y + ") ";
+            return_string += "(" + point.x + ", " + point.y + "), ";
         }
         return return_string;
     }

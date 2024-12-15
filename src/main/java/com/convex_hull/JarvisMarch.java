@@ -1,5 +1,7 @@
 package com.convex_hull;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +32,9 @@ public class JarvisMarch {
 
             for (Point candidate : points) {
                 // if its the first point, skip it
-                if (candidate == current) continue;
+                if (candidate == current) {
+                    continue;
+                }
 
                 // Check if the candidate point is more counterclockwise than the current next point
                 if ((nextPoint == current || Point.orientation(current, nextPoint, candidate) == -1 || (Point.orientation(current, nextPoint, candidate) == 0 && Point.distance(current, candidate) > Point.distance(current, nextPoint)))) {
@@ -45,7 +49,7 @@ public class JarvisMarch {
                 break;
             }
         } while (!current.equals(start)); // Stop when we return to the starting point
-        
+
         // print the convex hull stack
         System.out.println("Convex Hull: " + Point.toString(convexHull));
     }
@@ -65,7 +69,9 @@ public class JarvisMarch {
 
             for (Point candidate : points) {
                 // if its the first point, skip it
-                if (candidate == current) continue;
+                if (candidate == current) {
+                    continue;
+                }
 
                 // Check if the candidate point is more counterclockwise than the current next point
                 if ((nextPoint == current || Point.orientation(current, nextPoint, candidate) == -1 || (Point.orientation(current, nextPoint, candidate) == 0 && Point.distance(current, candidate) > Point.distance(current, nextPoint)))) {
@@ -80,7 +86,7 @@ public class JarvisMarch {
                 break;
             }
         } while (!current.equals(start)); // Stop when we return to the starting point
-        
+
         return convexHull;
     }
 
@@ -111,18 +117,24 @@ public class JarvisMarch {
         }
         return lowest;
     }
-    
+
     public static void main(String[] args) {
-        JarvisMarch convexHull = new JarvisMarch(1000, 1000 );
+        JarvisMarch convexHull = new JarvisMarch(10000, 10000);
+        GrahamScan convexHull2 = new GrahamScan(10000, 10000);
 
-        Point[] points = convexHull.generateRandomPoints(100);
+        Point[] points = convexHull.generateRandomPoints(5000);
 
-        // print the points
-        System.out.print("Points: ");
-        Point.printPoints(points);
+        try {
+            FileWriter myWriter = new FileWriter("filename.txt");
+            myWriter.write(Point.toString(points));
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
 
         // convexHull.convexHullWithPrint(points);
-
         // print time before
         long startTime = System.nanoTime();
         System.out.println("\n\nConvex Hull: " + Point.toString(convexHull.convexHull(points)));
@@ -130,7 +142,17 @@ public class JarvisMarch {
         long endTime = System.nanoTime();
 
         // print the time taken
-        System.out.println("Time taken: " + (endTime - startTime) + " ns");
+        System.out.println("Time taken (Jarvis-March): " + (endTime - startTime) + " ns");
+        System.out.println("Start Time: " + startTime + " End Time: " + endTime);
+
+        // print time before
+        startTime = System.nanoTime();
+        System.out.println("\n\nConvex Hull: " + Point.toString(convexHull2.convexHull(points)));
+        // print time after
+        endTime = System.nanoTime();
+
+        // print the time taken
+        System.out.println("Time taken (Graham-Scan): " + (endTime - startTime) + " ns");
         System.out.println("Start Time: " + startTime + " End Time: " + endTime);
 
     }
