@@ -100,6 +100,12 @@ public class GrahamScan {
         Arrays.sort(points, (p1, p2) -> {
             double angle1 = Math.atan2(p1.y - start.y, p1.x - start.x);
             double angle2 = Math.atan2(p2.y - start.y, p2.x - start.x);
+            if (angle1 == angle2) {
+                // If angles are the same, keep the farthest point
+                double dist1 = Math.hypot(p1.x - start.x, p1.y - start.y);
+                double dist2 = Math.hypot(p2.x - start.x, p2.y - start.y);
+                return Double.compare(dist1, dist2);
+            }
             return Double.compare(angle1, angle2);
         });
     }
