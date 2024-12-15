@@ -54,19 +54,19 @@ public class GrahamScan {
         convexHull.push(start);
         convexHull.push(points[1]);
 
-        for (int i = 1; i < points.length - 1; i++) {
-            Point point_to_add = points[i + 1];
-            int top = convexHull.size() - 1;
-            if (Point.ccw(convexHull.elementAt(top - 1), convexHull.elementAt(top), point_to_add)) {
-                convexHull.push(point_to_add);
-            } else {
-                convexHull.pop();
-                i--;
+        for (int i = 2; i < points.length; i++) {
+            Point point_to_add = points[i];
+
+            // Ensure there are at least 2 points in the stack before checking ccw
+            while (convexHull.size() > 1 && !Point.ccw(convexHull.elementAt(convexHull.size() - 2), convexHull.peek(), point_to_add)) {
+                convexHull.pop(); // Remove the top point if it makes a right turn
             }
+
+            convexHull.push(point_to_add); // Add the current point to the hull
         }
-        
-        return convexHull;
-    }
+
+    return convexHull;
+}
 
     public Point[] generateRandomPoints(int number_of_points) {
         // pick random points within the area
