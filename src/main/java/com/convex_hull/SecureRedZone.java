@@ -74,7 +74,7 @@ public class SecureRedZone {
     }
 
     // public method to only print the low radiation points
-    public String printLowRadiationPoints(Point[] points) {
+    public String printHighRadiationPoints(Point[] points) {
         Point[] filteredPoints = this.removeLowRadiationPoints(points);
         return Point.toString(filteredPoints);
     }
@@ -99,7 +99,7 @@ public class SecureRedZone {
 
         // System.out.println("Points: " + Point.toString(points) + "\n");
 
-        System.out.println("Low Radiation Points" + redZone.printLowRadiationPoints(points) + "\n");
+        System.out.println("High Radiation Points" + redZone.printHighRadiationPoints(points) + "\n");
 
         // run both algorithms with time logging and input/output logging
         System.out.println("Running Jarvis March");
